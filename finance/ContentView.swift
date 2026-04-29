@@ -52,9 +52,9 @@ struct ContentView: View {
                             .frame(maxWidth: .infinity)
                             .background(
                                 LinearGradient(
-                                    colors: [Color.darkBlue, Color.blue.opacity(0.8)],
-                                    startPoint: .leading,
-                                    endPoint: .trailing
+                                    colors: [Color.primaryBlue, Color.blue.opacity(0.8)],
+                                    startPoint: .bottomLeading,
+                                    endPoint: .topTrailing
                                 )
                             )
                             .cornerRadius(15)

@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct SignUpView: View {
-    
     @State private var name = ""
     @State private var email = ""
     @State private var password = ""
@@ -18,7 +17,7 @@ struct SignUpView: View {
         ZStack {
             // Background
             LinearGradient(
-                colors: [Color.blue.opacity(0.7), Color.blue.opacity(0.3)],
+                colors: [Color.gray.opacity(0.3), Color.gray],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
@@ -54,7 +53,7 @@ struct SignUpView: View {
                             .frame(maxWidth: .infinity)
                             .padding()
                             .background(Color.white)
-                            .foregroundColor(.blue)
+                            .foregroundColor(.black)
                             .cornerRadius(12)
                     }
                     .padding(.top, 10)
@@ -67,14 +66,13 @@ struct SignUpView: View {
                 
                 // Footer
                 HStack {
-                    Text("Already have an account?")
-                        .foregroundColor(.white.opacity(0.8))
+                    Text("Already have an account?").foregroundColor(.white.opacity(0.8))
                     
-                    Button("Login") {
-                        // navegação
+                    NavigationLink {
+                        LoginView()
+                    } label: {
+                        Text("Login").fontWeight(.bold).foregroundColor(.white)
                     }
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
                 }
                 .padding(.top, 10)
             }
@@ -89,11 +87,9 @@ struct CustomTextField: View {
     
     var body: some View {
         HStack {
-            Image(systemName: icon)
-                .foregroundColor(.black)
+            Image(systemName: icon).foregroundColor(.gray)
             
-            TextField(placeholder, text: $text)
-                .autocapitalization(.none)
+            TextField(placeholder, text: $text).autocapitalization(.none)
         }
         .padding()
         .background(Color.white.opacity(0.2))
@@ -108,8 +104,7 @@ struct CustomSecureField: View {
     
     var body: some View {
         HStack {
-            Image(systemName: icon)
-                .foregroundColor(.gray)
+            Image(systemName: icon).foregroundColor(.gray)
             
             SecureField(placeholder, text: $text)
         }
@@ -120,5 +115,7 @@ struct CustomSecureField: View {
 }
 
 #Preview {
-    SignUpView()
+    NavigationStack {
+        SignUpView()
+    }
 }

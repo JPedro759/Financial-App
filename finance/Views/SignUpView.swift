@@ -6,111 +6,174 @@
 //
 
 import SwiftUI
+import AuthenticationServices
 
 struct SignUpView: View {
     @State private var name = ""
     @State private var email = ""
     @State private var password = ""
     @State private var confirmPassword = ""
+    @State private var showPassword = false
+    @State private var rememberMe = false
     
+    @State private var authorizationResult: ASAuthorization? = nil
+    @State private var error: Error? = nil
+
     var body: some View {
         ZStack {
-            // Background
             LinearGradient(
-                colors: [Color.gray.opacity(0.3), Color.gray],
+                colors: [.black, .deepNavy],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
-            )
+            ).ignoresSafeArea() // Fundo preto total
+            
+            GeometryReader { geo in
+                Circle()
+                    .fill(Color.green.opacity(0.5))
+                    .frame(width: 250, height: 250)
+                    .blur(radius: 100)
+                    .offset(x: -geo.size.width * 0.15, y: 0)
+            }
             .ignoresSafeArea()
             
-            VStack(spacing: 25) {
-                
-                // Title
-                VStack(spacing: 8) {
+            VStack(alignment: .leading) {
+                // Header
+                VStack(alignment: .leading, spacing: 10) {
                     Text("Create an Account")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
+                        .font(.system(size: 38, weight: .bold,design: .rounded))
+                        .foregroundStyle(.white)
                     
-                    Text("Sign up to get started")
-                        .foregroundColor(.white.opacity(0.8))
-                }
+                    Text("Create your account for daily updates.")
+                        .foregroundStyle(.white.opacity(0.8))
+                }.padding(.horizontal, 20)
                 
-                // Glass Card
-                VStack(spacing: 16) {
-                    CustomTextField(icon: "person", placeholder: "Full Name", text: $name)
-                    CustomTextField(icon: "envelope", placeholder: "Email", text: $email)
+                Spacer().frame(height: 35)
+                
+                // Formulário
+                VStack(spacing: 20) {
+                    InputField(
+                        label: "Username",
+                        placeholder: "Enter your username",
+                        text: $name,
+                        iconName: "person.fill",
+                        showPassword: $showPassword
+                    )
+                    InputField(
+                        label: "Email",
+                        placeholder: "Enter your email",
+                        text: $email,
+                        iconName: "envelope.fill",
+                        showPassword: $showPassword
+                    )
+                    InputField(
+                        label: "Password",
+                        placeholder: "Enter your password",
+                        text: $password,
+                        iconName: "lock.fill",
+                        isSecure: true,
+                        showPassword: $showPassword
+                    )
+                    InputField(
+                        label: "Confirm password",
+                        placeholder: "Confirm your password",
+                        text: $confirmPassword,
+                        iconName: "lock.fill",
+                        isSecure: true,
+                        showPassword: $showPassword
+                    )
                     
-                    CustomSecureField(icon: "lock", placeholder: "Password", text: $password)
-                    CustomSecureField(icon: "lock", placeholder: "Confirm Password", text: $confirmPassword)
-                    
-                    // Button
-                    Button(action: {
-                        // ação de cadastro
-                    }) {
-                        Text("Sign Up")
-                            .fontWeight(.bold)
+                    Button(action: {}) {
+                        Text("Create Account").fontWeight(.medium)
+                            .foregroundColor(.black)
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(Color.white)
-                            .foregroundColor(.black)
-                            .cornerRadius(12)
-                    }
-                    .padding(.top, 10)
-                    
-                }
-                .padding()
-                .background(.ultraThinMaterial) // efeito glass
-                .cornerRadius(20)
-                .padding(.horizontal)
+                            .background(
+                                LinearGradient(
+                                    colors: [.green, Color(hex: "#BBFF2B")],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            ).clipShape(Capsule())
+                    }.padding(.top, 10)
+                }.padding(.horizontal, 20)
                 
-                // Footer
-                HStack {
-                    Text("Already have an account?").foregroundColor(.white.opacity(0.8))
+                HStack(spacing: 20) {
+                    Rectangle()
+                        .fill(.gray.opacity(0.5))
+                        .frame(height: 2)
+                        .clipShape(Capsule())
                     
-                    NavigationLink {
-                        LoginView()
+                    Text("OR")
+                        .foregroundStyle(.gray)
+                        .fontWeight(.bold)
+                    
+                    Rectangle()
+                        .fill(.gray.opacity(0.5))
+                        .frame(height: 2)
+                        .clipShape(Capsule())
+                }
+                .padding(.all, 20)
+                
+                HStack(spacing: 20) {
+                    // Google
+                    Button {
+                        
                     } label: {
-                        Text("Login").fontWeight(.bold).foregroundColor(.white)
+                        HStack(spacing: 10) {
+                            Image("google")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 22, height: 22)
+                            
+                            Text("Google")
+                                .fontWeight(.medium)
+                                .foregroundStyle(.white)
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(Color.white.opacity(0.1))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 18)
+                                .stroke(Color.white.opacity(0.1), lineWidth: 2)
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 18))
+                    }
+                    
+                    // Apple
+                    SignInWithAppleButton(
+                        .signUp,
+                        onRequest: { request in
+                            request.requestedScopes = [.fullName, .email]
+                        },
+                        onCompletion: { result in
+                            switch result {
+                            case .success(let credential):
+                                print("Success: \(authorizationResult?.description ?? "")")
+                            case .failure(let error):
+                                print("Error: \(error)")
+                            }
+                        }
+                    )
+                    .signInWithAppleButtonStyle(.white)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .cornerRadius(16)
+                }.padding(.horizontal, 20)
+                
+                HStack {
+                    Text("Don't have an account?")
+                        .foregroundColor(.white)
+                        .font(.subheadline)
+                    
+                    NavigationLink(destination: LoginView()) {
+                        Text("Sign In")
+                            .foregroundColor(.blue)
+                            .font(.subheadline)
+                            .fontWeight(.bold)
                     }
                 }
-                .padding(.top, 10)
+                .frame(maxWidth: .infinity)
+                .padding(.top, 20)
             }
         }
-    }
-}
-
-struct CustomTextField: View {
-    var icon: String
-    var placeholder: String
-    @Binding var text: String
-    
-    var body: some View {
-        HStack {
-            Image(systemName: icon).foregroundColor(.gray)
-            
-            TextField(placeholder, text: $text).autocapitalization(.none)
-        }
-        .padding()
-        .background(Color.white.opacity(0.2))
-        .cornerRadius(10)
-    }
-}
-
-struct CustomSecureField: View {
-    var icon: String
-    var placeholder: String
-    @Binding var text: String
-    
-    var body: some View {
-        HStack {
-            Image(systemName: icon).foregroundColor(.gray)
-            
-            SecureField(placeholder, text: $text)
-        }
-        .padding()
-        .background(Color.white.opacity(0.2))
-        .cornerRadius(10)
     }
 }
 

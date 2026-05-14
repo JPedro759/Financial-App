@@ -22,11 +22,14 @@ struct LoginView: View {
                 endPoint: .bottomTrailing
             ).ignoresSafeArea() // Fundo preto total
         
-            Circle()
-                .fill(Color.green.opacity(0.5))
-                .frame(width: 250, height: 250)
-                .blur(radius: 100)
-                .offset(x: -120, y: -300)
+            GeometryReader { geo in
+                Circle()
+                    .fill(Color.green.opacity(0.5))
+                    .frame(width: 250, height: 250)
+                    .blur(radius: 100)
+                    .offset(x: -geo.size.width * 0.15, y: -0)
+            }
+            .ignoresSafeArea()
             
             VStack(alignment: .leading) {
                 Spacer().frame(height: 120)
@@ -38,15 +41,28 @@ struct LoginView: View {
                         .foregroundStyle(.white)
 
                     Text("Login to view daily finance updates.")
-                        .foregroundStyle(.gray)
+                        .foregroundStyle(.white.opacity(0.8))
                 }.padding(.horizontal, 20)
                 
-                Spacer().frame(height: 50)
+                Spacer().frame(height: 35)
 
                 // Formulário
                 VStack(spacing: 20) {
-                    inputField(label: "Email", text: $email)
-                    inputField(label: "Password", text: $password, isSecure: true)
+                    InputField(
+                        label: "Email",
+                        placeholder: "Enter your email",
+                        text: $email,
+                        iconName: "envelope.fill",
+                        showPassword: $showPassword
+                    )
+                    InputField(
+                        label: "Password",
+                        placeholder: "Enter your password",
+                        text: $password,
+                        iconName: "lock.fill",
+                        isSecure: true,
+                        showPassword: $showPassword
+                    )
                     
                     HStack(spacing: 20) {
                         Button {
@@ -94,7 +110,9 @@ struct LoginView: View {
                         .frame(height: 2)
                         .clipShape(Capsule())
 
-                    Text("OR").foregroundStyle(.gray)
+                    Text("OR")
+                        .foregroundStyle(.gray)
+                        .fontWeight(.bold)
 
                     Rectangle()
                         .fill(.gray.opacity(0.5))
@@ -160,73 +178,7 @@ struct LoginView: View {
             }
         }
         .ignoresSafeArea(.container, edges: .top)
-    }
-
-    // Helper para os campos de entrada
-    @ViewBuilder
-    func inputField(
-        label: String,
-        text: Binding<String>,
-        isSecure: Bool = false
-    ) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(label)
-                .foregroundColor(.white)
-                .font(.headline)
-            
-            HStack(spacing: 12) {
-                Image(systemName: isSecure ? "lock" : "envelope")
-                    .foregroundStyle(.gray)
-                    .frame(width: 20)
-                
-                Group {
-                    if isSecure {
-                        if showPassword {
-                            TextField(
-                                "",
-                                text: text,
-                                prompt: Text("Enter your password").foregroundColor(.gray)
-                            ).textContentType(.password).frame(height: 25)
-                        } else {
-                            SecureField(
-                                "",
-                                text: text,
-                                prompt: Text("Enter your password").foregroundColor(.gray)
-                            ).textContentType(.password).frame(height: 25)
-                        }
-                    } else {
-                        TextField(
-                            "",
-                            text: text,
-                            prompt: Text("Enter your email").foregroundColor(.gray)
-                        ).foregroundStyle(Color.white).frame(height: 25)
-                    }
-                }
-                .foregroundStyle(.white)
-                
-                // Eye button
-                if isSecure {
-                    Toggle(
-                        "Eye",
-                        systemImage: showPassword ? "eye.slash" : "eye",
-                        isOn: $showPassword
-                    )
-                    .font(.callout)
-                    .tint(.gray)
-                    .toggleStyle(.button)
-                    .labelStyle(.iconOnly).frame(height: 25)
-                }
-            }
-            .padding()
-            .background(
-                RoundedRectangle(cornerRadius: 15)
-                    .fill(Color.white.opacity(0.05))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 15)
-                            .stroke(Color.green.opacity(0.3), lineWidth: 2)
-                    )
-            )
-        }
+        .frame(maxWidth: .infinity)
     }
 }
 

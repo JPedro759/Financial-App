@@ -43,7 +43,7 @@ struct ContentView: View {
                 
                 VStack(spacing: 10) {
                     NavigationLink {
-                        HomeView()
+                        SignUpView()
                     } label: {
                         Text("Get Started")
                             .font(.headline)
@@ -71,7 +71,7 @@ struct ContentView: View {
                             .fixedSize(horizontal: false, vertical: true)
                         
                         NavigationLink {
-                            HomeView()
+                            SignUpView()
                         } label: {
                             Text("Sign Up").font(.subheadline).fontWeight(.semibold)
                         }

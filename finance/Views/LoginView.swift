@@ -32,12 +32,12 @@ struct LoginView: View {
             .ignoresSafeArea()
             
             VStack(alignment: .leading) {
-                Spacer().frame(height: 120)
+                Spacer()
                 
                 // Header
                 VStack(alignment: .leading, spacing: 10) {
                     Text("Welcome Back")
-                        .font(.system(size: 38, weight: .bold,design: .rounded))
+                        .font(.system(size: 38, weight: .bold, design: .rounded))
                         .foregroundStyle(.white)
 
                     Text("Login to view daily finance updates.")
@@ -53,7 +53,7 @@ struct LoginView: View {
                         placeholder: "Enter your email",
                         text: $email,
                         iconName: "envelope.fill",
-                        showPassword: $showPassword
+                        showPassword: .constant(false)
                     )
                     InputField(
                         label: "Password",
@@ -79,7 +79,7 @@ struct LoginView: View {
                             }
                         }
                         
-                        Button(action: {}) {
+                        NavigationLink(destination: ForgotPasswordView()) {
                             Text("Forgot password?")
                                 .foregroundStyle(.white)
                                 .font(.subheadline)
@@ -88,7 +88,8 @@ struct LoginView: View {
                     }
                     
                     Button(action: {}) {
-                        Text("Sign In").fontWeight(.medium)
+                        Text("Sign In")
+                            .font(.system(size: 20))
                             .foregroundColor(.black)
                             .frame(maxWidth: .infinity)
                             .padding()
@@ -126,13 +127,14 @@ struct LoginView: View {
                 Button {
 
                 } label: {
-                    HStack(spacing: 10) {
+                    HStack(spacing: 8) {
                         Image("google")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 22, height: 22)
+                            .frame(width: 16, height: 16)
 
                         Text("Sign in with Google")
+                            .font(.system(size: 20))
                             .fontWeight(.medium)
                             .foregroundStyle(.white)
                     }

@@ -47,7 +47,7 @@ struct SignUpView: View {
                         .foregroundStyle(.white.opacity(0.8))
                 }.padding(.horizontal, 20)
                 
-                Spacer().frame(height: 35)
+                Spacer().frame(height: 25)
                 
                 // Formulário
                 VStack(spacing: 20) {
@@ -56,14 +56,14 @@ struct SignUpView: View {
                         placeholder: "Enter your username",
                         text: $name,
                         iconName: "person.fill",
-                        showPassword: $showPassword
+                        showPassword: .constant(false)
                     )
                     InputField(
                         label: "Email",
                         placeholder: "Enter your email",
                         text: $email,
                         iconName: "envelope.fill",
-                        showPassword: $showPassword
+                        showPassword: .constant(false)
                     )
                     InputField(
                         label: "Password",
@@ -83,7 +83,8 @@ struct SignUpView: View {
                     )
                     
                     Button(action: {}) {
-                        Text("Create Account").fontWeight(.medium)
+                        Text("Create Account")
+                            .font(.system(size: 20))
                             .foregroundColor(.black)
                             .frame(maxWidth: .infinity)
                             .padding()
@@ -114,28 +115,29 @@ struct SignUpView: View {
                 }
                 .padding(.all, 20)
                 
-                HStack(spacing: 20) {
+                HStack {
                     // Google
                     Button {
-                        
+
                     } label: {
-                        HStack(spacing: 10) {
+                        HStack(spacing: 6) {
                             Image("google")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 22, height: 22)
-                            
-                            Text("Google")
-                                .fontWeight(.medium)
+                                .frame(width: 12, height: 12)
+
+                            Text("Sign up with Google")
+                                .font(.system(size: 14))
+                                .fontWeight(.semibold)
                                 .foregroundStyle(.white)
                         }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .frame(width: 175, height: 50)
                         .background(Color.white.opacity(0.1))
                         .overlay(
-                            RoundedRectangle(cornerRadius: 18)
-                                .stroke(Color.white.opacity(0.1), lineWidth: 2)
+                            RoundedRectangle(cornerRadius: 16)
+                                .stroke(Color.white.opacity(0.2), lineWidth: 2)
                         )
-                        .clipShape(RoundedRectangle(cornerRadius: 18))
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
                     }
                     
                     // Apple
@@ -154,9 +156,11 @@ struct SignUpView: View {
                         }
                     )
                     .signInWithAppleButtonStyle(.white)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .frame(width: 175, height: 50)
                     .cornerRadius(16)
-                }.padding(.horizontal, 20)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 20)
                 
                 HStack {
                     Text("Don't have an account?")

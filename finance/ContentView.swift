@@ -10,70 +10,88 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         NavigationStack {
-            VStack(spacing: 25) {
-                VStack {
-                    CreditCard(
-                        cardNumber: "1291 0298 3012 9434",
-                        cardHolderName: "D Maryuandi",
-                        expiryDate: "12/24",
-                        gradientColors: Gradient(colors: [Color.orange, Color.pink, Color.purple])
-                    )
-                    CreditCard(
-                        cardNumber: "1230 4320 2349 0298",
-                        cardHolderName: "Alejandro J",
-                        expiryDate: "12/24",
-                        gradientColors: Gradient(colors: [Color.black, Color.deepNavy, Color.blue])
-                    )
-                }.padding(.horizontal, 15)
+            ZStack {
+                LinearGradient(
+                    colors: [.black, .black, Color(hex: "#39076B")],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                ).ignoresSafeArea()
+            
+                GeometryReader { geo in
+                    Circle()
+                        .fill(.cyan.opacity(0.6))
+                        .frame(width: 250, height: 250)
+                        .blur(radius: 100)
+                        .offset(x: -geo.size.width * 0.15, y: -0)
+                }
+                .ignoresSafeArea()
                 
-                VStack(spacing: 10) {
-                    Text("Innovative Digital App Financial Planner")
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .multilineTextAlignment(.center)
-                        .fixedSize(horizontal: false, vertical: true)
+                VStack(spacing: 25) {
+                    VStack {
+                        CreditCard(
+                            cardNumber: "1291 0298 3012 9434",
+                            cardHolderName: "D Maryuandi",
+                            expiryDate: "12/24",
+                            gradientColors: Gradient(colors: [Color.orange, Color.pink, Color.purple])
+                        )
+                        CreditCard(
+                            cardNumber: "1230 4320 2349 0298",
+                            cardHolderName: "Alejandro J",
+                            expiryDate: "12/24",
+                            gradientColors: Gradient(colors: [Color.black, Color.darkBlue, Color.blue])
+                        )
+                    }.padding(.horizontal, 15)
                     
-                    Text("Finance Help you to manage your financial problem easily and efficiently")
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                        .foregroundColor(.gray)
-                        .multilineTextAlignment(.center)
-                        .fixedSize(horizontal: false, vertical: true)
-                }.padding(.horizontal, 15)
-                
-                VStack(spacing: 10) {
-                    NavigationLink {
-                        SignUpView()
-                    } label: {
-                        Text("Get Started")
-                            .font(.headline)
+                    VStack(spacing: 10) {
+                        Text("Innovative Digital App Financial Planner")
+                            .font(.title)
+                            .fontWeight(.bold)
                             .foregroundColor(.white)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(
-                                LinearGradient(
-                                    colors: [Color.primaryBlue, Color.blue.opacity(0.8)],
-                                    startPoint: .bottomLeading,
-                                    endPoint: .topTrailing
-                                )
-                            )
-                            .cornerRadius(15)
-                            .shadow(radius: 5)
-                    }
-                    .padding(.horizontal)
-                    
-                    HStack {
-                        Text("Doesn't have an account?")
-                            .font(.subheadline)
-                            .fontWeight(.medium)
-                            .foregroundColor(.gray)
                             .multilineTextAlignment(.center)
                             .fixedSize(horizontal: false, vertical: true)
                         
+                        Text("Finance Help you to manage your financial problem easily and efficiently")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                            .foregroundColor(.white.opacity(0.8))
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }.padding(.horizontal, 15)
+                    
+                    VStack(spacing: 10) {
                         NavigationLink {
                             SignUpView()
                         } label: {
-                            Text("Sign Up").font(.subheadline).fontWeight(.semibold)
+                            Text("Get Started")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(
+                                    LinearGradient(
+                                        colors: [Color.primaryBlue, Color.blue.opacity(0.8)],
+                                        startPoint: .bottomLeading,
+                                        endPoint: .topTrailing
+                                    )
+                                )
+                                .cornerRadius(15)
+                                .shadow(radius: 5)
+                        }
+                        .padding(.horizontal)
+                        
+                        HStack {
+                            Text("Doesn't have an account?")
+                                .font(.subheadline)
+                                .fontWeight(.medium)
+                                .foregroundColor(.white.opacity(0.8))
+                                .multilineTextAlignment(.center)
+                                .fixedSize(horizontal: false, vertical: true)
+                            
+                            NavigationLink {
+                                SignUpView()
+                            } label: {
+                                Text("Sign Up").font(.subheadline).fontWeight(.semibold)
+                            }
                         }
                     }
                 }

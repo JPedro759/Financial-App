@@ -22,7 +22,7 @@ struct CreditCard: View {
                     startPoint: .topTrailing,
                     endPoint: .bottomLeading
                 ))
-                .frame(height: 225) // Altura fixa para todos os cartões
+                .frame(height: 240) // Altura fixa para todos os cartões
                 .blur(radius: 10)
 
             // 3. Conteúdo Principal
